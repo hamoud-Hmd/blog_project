@@ -1,0 +1,23 @@
+services:
+  - type: web
+    name: blog-with-users
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn main:app
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.0
+      - key: SECRET_KEY
+        generateValue: true
+      - key: FLASK_ENV
+        value: production
+      - key: DATABASE_URL
+        fromDatabase:
+          name: blogdb
+          property: connectionString
+
+databases:
+  - name: blogdb
+    databaseName: blogdb
+    user: blogdb
+
